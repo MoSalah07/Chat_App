@@ -6,12 +6,12 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 export default async function handler(
   request: NextApiRequest,
-  respnse: NextApiResponse
+  response: NextApiResponse
 ) {
-  const session = await getServerSession(request, respnse, authOptions);
+  const session = await getServerSession(request, response, authOptions);
 
   if (!session?.user?.email) {
-    return respnse.status(401);
+    return response.status(401);
   }
 
   const socketId = request.body.socket_id;
@@ -22,5 +22,5 @@ export default async function handler(
 
   const authResponse = pusherServer.authorizeChannel(socketId, channel, data);
 
-  return respnse.send(authResponse);
+  return response.send(authResponse);
 }
